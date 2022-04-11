@@ -1,16 +1,18 @@
 <?php
-$dbUserName = "root";
-$dbPassword = "password";
-$pdo = new PDO("mysql:host=mysql; dbname=todo; charset=utf8mb4", $dbUserName, $dbPassword);
+$dbUserName = 'root';
+$dbPassword = 'password';
+$pdo = new PDO(
+    'mysql:host=mysql; dbname=todo; charset=utf8mb4',
+    $dbUserName,
+    $dbPassword
+);
 
-
-$sql = "SELECT * FROM categories";
+$sql = 'SELECT * FROM categories';
 
 $statement = $pdo->prepare($sql);
 $statement->execute();
 
 $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +26,7 @@ $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="row justify-content-center">
-        <form action="task_store.php" method="post">
+        <form action="store.php" method="post">
             <div class="form-group">
                 <h2><label>タスクの追加</label></h2>
             </div>
@@ -35,8 +37,10 @@ $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <input type="date" id="deadline" name="deadline" class="form-control">
             </div>
             <select name='category'>
-                <?php foreach ($categories as $category) : ?>
-                <option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
+                <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category[
+                    'id'
+                ]; ?>"><?php echo $category['name']; ?></option>
                 <?php endforeach; ?>
             </select>
             <div class="form-group">

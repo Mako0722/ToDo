@@ -16,13 +16,14 @@ if (isset($_SESSION['formInputs']['userId'])) {
     $link = '<a href="./login.php">ログイン</a>';
 }
 
+$dbUserName = 'root';
+$dbPassword = 'password';
+$pdo = new PDO(
+    'mysql:host=mysql; dbname=todo; charset=utf8mb4',
+    $dbUserName,
+    $dbPassword
+);
 
-
-$dbUserName = "root";
-$dbPassword = "password";
-$pdo = new PDO("mysql:host=mysql; dbname=todo; charset=utf8mb4", $dbUserName, $dbPassword);
-
-// $sql = "SELECT * FROM tasks LEFT OUTER JOIN categories ON tasks.category_id = categories.id";
 
 
 //昇順降順
@@ -38,52 +39,43 @@ if (isset($_GET['search'])) {
     $contents = '%%';
 }
 
-if (isset($_GET['status']) and $_GET['status'] == 'completion'){
-    $status = "T.status = 1";
-}elseif(isset($_GET['status']) and $_GET['status'] == 'uncompletion'){
-    $status = "T.status = 0";
-}else{
-    $status = "T.status = 1 OR T.status = 0";
+if (isset($_GET['status']) and $_GET['status'] == 'completion') {
+    $status = 'T.status = 1';
+} elseif (isset($_GET['status']) and $_GET['status'] == 'uncompletion') {
+    $status = 'T.status = 0';
+} else {
+    $status = 'T.status = 1 OR T.status = 0';
 }
 
-if (isset($_GET['category'])){
-    $category = "AND T.category_id = ".$_GET['category'];
-}else{
-    $category ="";
+if (isset($_GET['category'])) {
+    $category = 'AND T.category_id = ' . $_GET['category'];
+} else {
+    $category = '';
 }
 
 
-// $sql = "SELECT * FROM tasks WHERE contents LIKE :contents ORDER BY id $direction";
-
-// $sql = "SELECT tasks WHERE $status;
 
 $sql = "SELECT T.id, T.user_id, T.status, T.contents, T.category_id, T.deadline, C.name AS category_name FROM tasks AS T INNER JOIN categories AS C ON T.category_id = C.id WHERE T.contents LIKE :contents AND $status $category ORDER BY id $direction";
-
-
-
 
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':contents', $contents, PDO::PARAM_STR);
 $statement->execute();
 
-
 $tasks = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$sql = "SELECT * FROM categories";
+$sql = 'SELECT * FROM categories';
 $statement = $pdo->prepare($sql);
 $statement->execute();
 
 $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-foreach ($tasks as $kie => $task){
-  if ($task['status'] == "0"){
-      $tasks[$kie]['status']= '未完了';
-  }else{
-      $tasks[$kie]['status']= '完了';
-  }
+foreach ($tasks as $kie => $task) {
+    if ($task['status'] == '0') {
+        $tasks[$kie]['status'] = '未完了';
+    } else {
+        $tasks[$kie]['status'] = '完了';
+    }
 }
-// var_dump($tasks);
-// die;
 
 
 ?>
@@ -127,14 +119,17 @@ foreach ($tasks as $kie => $task){
               </label>
           </div>
             <select name='category'>
-                <?php foreach ($categories as $category) : ?>
-                <option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
+                <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category[
+                    'id'
+                ]; ?>"><?php echo $category['name']; ?></option>
                 <?php endforeach; ?>
             </select>
           <!-- 検索 -->
           <div class="ml-8 mb-6">
-            <input name="search" type="text" value="<?php echo $_GET['search'] ??
-                ''; ?>" placeholder="キーワードを入力" />
+            <input name="search" type="text" value="<?php echo $_GET[
+                'search'
+            ] ?? ''; ?>" placeholder="キーワードを入力" />
             <input type="submit" value="検索" />
           </div>
           <div class="ml-8">
@@ -159,15 +154,21 @@ foreach ($tasks as $kie => $task){
             </tr>
           </thead>
         <tbody id="todo-body"></tbody>
-          <?php foreach ($tasks as $task) : ?>
+          <?php foreach ($tasks as $task): ?>
             <tr>
                 <td><?php echo $task['contents']; ?></td>
                 <td><?php echo $task['deadline']; ?></td>
                 <td><?php echo $task['category_name']; ?></td>
 
-                <th><a href="/task/updateStatus.php?id=<?php echo $task['id'] ?>"><?php echo $task['status']; ?></a></th>
-                <th><a href="/task/edit_form.php?id=<?php echo $task['id'] ?>">編集</a></th>
-                <th><a href="/task/task_deletion.php?id=<?php echo $task['id'] ?>">削除</a></th>
+                <th><a href="/task/updateStatus.php?id=<?php echo $task[
+                    'id'
+                ]; ?>"><?php echo $task['status']; ?></a></th>
+                <th><a href="/task/edit_form.php?id=<?php echo $task[
+                    'id'
+                ]; ?>">編集</a></th>
+                <th><a href="/task/deletion.php?id=<?php echo $task[
+                    'id'
+                ]; ?>">削除</a></th>
             </tr>
           <?php endforeach; ?>
         </tbody>

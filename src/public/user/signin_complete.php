@@ -2,8 +2,6 @@
 require_once __DIR__ . '/../../app/Infrastructure/Dao/UserDao.php';
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
 
-
-
 session_start();
 $email = filter_input(INPUT_POST, 'email');
 $password = filter_input(INPUT_POST, 'password');

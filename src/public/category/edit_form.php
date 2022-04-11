@@ -1,15 +1,19 @@
 <?php
-$dbUserName = "root";
-$dbPassword = "password";
-$pdo = new PDO("mysql:host=mysql; dbname=todo; charset=utf8mb4", $dbUserName, $dbPassword);
+$dbUserName = 'root';
+$dbPassword = 'password';
+$pdo = new PDO(
+    'mysql:host=mysql; dbname=todo; charset=utf8mb4',
+    $dbUserName,
+    $dbPassword
+);
 
 $id = filter_input(INPUT_GET, 'id');
 
- $sql = 'SELECT * FROM categories WHERE id = :id';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':id', $id, PDO::PARAM_INT);
-    $statement->execute();
-    $category = $statement->fetch(PDO::FETCH_ASSOC);
+$sql = 'SELECT * FROM categories WHERE id = :id';
+$statement = $pdo->prepare($sql);
+$statement->bindValue(':id', $id, PDO::PARAM_INT);
+$statement->execute();
+$category = $statement->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -23,11 +27,13 @@ $id = filter_input(INPUT_GET, 'id');
 
 </body>
 </html>
-    <form action="category_edit.php" method="post">
+    <form action="edit.php" method="post">
         <div class="form-group">
         <input type="hidden" name="id" value=<?php echo $category['id']; ?>>
             <labe>カテゴリー登録</labe><br>
-                <input type="text" name="name" class="form-control" value=<?php echo  $category['name']; ?>>
+                <input type="text" name="name" class="form-control" value=<?php echo $category[
+                    'name'
+                ]; ?>>
             </div>
         </div>
         <button type="submit" value="カテゴリー" class="btn-primary" name="button">更新</button>

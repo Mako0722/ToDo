@@ -1,15 +1,19 @@
 <?php
-$dbUserName = "root";
-$dbPassword = "password";
-$pdo = new PDO("mysql:host=mysql; dbname=todo; charset=utf8mb4", $dbUserName, $dbPassword);
+$dbUserName = 'root';
+$dbPassword = 'password';
+$pdo = new PDO(
+    'mysql:host=mysql; dbname=todo; charset=utf8mb4',
+    $dbUserName,
+    $dbPassword
+);
 
 $id = filter_input(INPUT_GET, 'id');
 
- $sql = 'SELECT * FROM tasks WHERE id = :id';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':id', $id, PDO::PARAM_INT);
-    $statement->execute();
-    $task = $statement->fetch(PDO::FETCH_ASSOC);
+$sql = 'SELECT * FROM tasks WHERE id = :id';
+$statement = $pdo->prepare($sql);
+$statement->bindValue(':id', $id, PDO::PARAM_INT);
+$statement->execute();
+$task = $statement->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +27,7 @@ $id = filter_input(INPUT_GET, 'id');
 </head>
 <body>
     <div class="row justify-content-center">
-        <form action="task_edit.php" method="post">
+        <form action="edit.php" method="post">
             <input type="hidden" name="id" value=<?php echo $task['id']; ?>>
             <div class="form-group">
                 <label>編集</label>
