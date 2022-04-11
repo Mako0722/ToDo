@@ -24,8 +24,6 @@ $pdo = new PDO(
     $dbPassword
 );
 
-
-
 //昇順降順
 if (isset($_GET['order'])) {
     $direction = $_GET['order'];
@@ -53,8 +51,6 @@ if (isset($_GET['category'])) {
     $category = '';
 }
 
-
-
 $sql = "SELECT T.id, T.user_id, T.status, T.contents, T.category_id, T.deadline, C.name AS category_name FROM tasks AS T INNER JOIN categories AS C ON T.category_id = C.id WHERE T.contents LIKE :contents AND $status $category ORDER BY id $direction";
 
 $statement = $pdo->prepare($sql);
@@ -76,8 +72,6 @@ foreach ($tasks as $kie => $task) {
         $tasks[$kie]['status'] = '完了';
     }
 }
-
-
 ?>
 
 

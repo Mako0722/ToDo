@@ -24,7 +24,6 @@ $statement->bindValue(':category_id', $category_id, PDO::PARAM_INT);
 $statement->bindParam(':deadline', $deadline, PDO::PARAM_STR);
 $statement->execute();
 
-
 header('Location: ../index.php');
 
 exit();

@@ -10,7 +10,6 @@ session_start();
 $user_id = $_SESSION['formInputs']['userId'];
 $name = filter_input(INPUT_POST, 'name');
 
-
 $sql = 'INSERT INTO `categories`(`name`,`user_id`) VALUES (:name, :user_id)';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':name', $name, PDO::PARAM_STR);
